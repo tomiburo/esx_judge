@@ -44,4 +44,24 @@ function OpenCloakroomMenu()
     end)
 end
 
--- F6 MENU, WARDROBE FUNCTIONS, VEHICLES AND BLIPS COMING AS SOON AS POSSIBLE
+function F6Menu() -- F6 MENU IN PROGRESS
+    local stuff = {
+        {label = 'Preveri identiteto osebe', value = 'id'},
+        {label = 'Preveri kazni osebi', value = 'kazni'}
+    }
+
+    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'defalut', {
+        title = 'Sodnik - F6',
+        align = 'bottom-right',
+        elements = stuff
+    }, function(data, menu)
+        local x = data.current.value
+        if x == 'id' then
+            OpenIDCardMenu()
+        elseif x == 'kazni' then
+            OpenFineMenu()
+    end, function(data, menu)
+        menu.close()
+    end)
+
+--WARDROBE FUNCTIONS, VEHICLES AND BLIPS COMING AS SOON AS POSSIBLE
