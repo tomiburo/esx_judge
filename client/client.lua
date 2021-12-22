@@ -30,7 +30,7 @@ function OpenCloakroomMenu()
         align = 'bottom-right',
         elements = elements
     }, function(data, menu)
-        -- TODO WARDROBE
+        -- wardrobe done - not tested yet
         local a = data.current.value
         if a == 'civil' then
             ObleciCivil()
@@ -63,5 +63,46 @@ function F6Menu() -- F6 MENU IN PROGRESS
     end, function(data, menu)
         menu.close()
     end)
+end
+
+function ObleciCivil()
+    ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
+        local isMale = skin.sex == 0
+
+        TriggerEvent('skinchanger:loadDefaultModel', isMale, function()
+            ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin)
+                TriggerEvent('skinchanger:loadSkin', skin)
+                TriggerEvent('esx:restoreLoadout')
+            end)
+        end)
+
+    end)
+end
+
+function ObleciSodnik()
+    TriggerEvent('skinchanger:getSkin', function(skin)
+		if skin.sex == 0 then
+			if Config.Uniforms[job].male then
+				TriggerEvent('skinchanger:loadClothes', skin, Config.Uniforms[job].male)
+			else
+				ESX.ShowNotification(_U('no_outfit'))
+			end
+
+			if job == 'bullet_wear' then
+				SetPedArmour(playerPed, 100)
+			end
+		else
+			if Config.Uniforms[job].female then
+				TriggerEvent('skinchanger:loadClothes', skin, Config.Uniforms[job].female)
+			else
+				ESX.ShowNotification(_U('no_outfit'))
+			end
+
+			if job == 'bullet_wear' then
+				SetPedArmour(playerPed, 100)
+			end
+		end
+	end) 
+end
 
 --WARDROBE FUNCTIONS, VEHICLES AND BLIPS COMING AS SOON AS POSSIBLE
