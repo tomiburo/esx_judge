@@ -105,4 +105,12 @@ function ObleciSodnik()
 	end) 
 end
 
+function OpenVozilaMenu()
+    local elements = {
+        for k,v in pairs(Config.SodnikVehicles) do
+			table.insert(elements,{label = v.label, name = v.label, model = v.model, price = v.price, type = 'car'})
+		end
+    }
+end
+
 --F6 MENU FUNCTIONS, VEHICLES AND BLIPS COMING AS SOON AS POSSIBLE

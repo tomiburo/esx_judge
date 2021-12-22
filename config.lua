@@ -1,5 +1,10 @@
 Config = {}
 
+Config.SodnikVehicles = {
+  { model = '', label = '-----VOZILA-----'},
+  { model = 'audia8', label = 'Skoda VRS 2020'} -- TODO: add cars 
+}
+
 Config.Uniforms = {
     recruit_wear = {
 		male = {
