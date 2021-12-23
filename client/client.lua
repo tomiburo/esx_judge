@@ -171,6 +171,7 @@ Citizen.CreateThread(function()
         end
     end
 end)
+-- end of blips
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(10)
