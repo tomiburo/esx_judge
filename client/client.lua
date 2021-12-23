@@ -108,7 +108,7 @@ end
 function OpenVozilaMenu()
     local elements = {
         for k,v in pairs(Config.SodnikVehicles) do
-			table.insert(elements,{label = v.label, name = v.label, model = v.model, price = v.price, type = 'car'})
+			table.insert(elements, {label = v.label, name = v.label, model = v.model, price = v.price, type = 'car'})
 		end
     }
 
@@ -128,4 +128,17 @@ function OpenVozilaMenu()
     end)
 end
 
---F6 MENU FUNCTIONS, VEHICLES AND BLIPS COMING AS SOON AS POSSIBLE
+function OpenIDCardMenu()
+-- TODO 
+end
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(10)
+        if IsControlJustPressed(0,167) then
+            F6Menu()
+        end
+    end
+end)
+
+--F6 MENU FUNCTIONS, COTNROLS, VEHICLES AND BLIPS COMING AS SOON AS POSSIBLE
