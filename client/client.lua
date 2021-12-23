@@ -131,7 +131,46 @@ end
 function OpenIDCardMenu()
 -- TODO 
 end
+-- blips here
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(10)
+        if PlayerData.job and PlayerData.job.name == 'judge' then
+            local playerPed = PlayerPedId()
+            local coords = GetEntityCoords(playerPed)
+            local isInMarker, hasExited, letSleep = false, false, true
+            local currentStation, currentPart, currentPartNum
 
+            for k,v in pairs(Config.Blips) do
+                for i=1, #v.Garderobe, 1 do
+                    local distance = GetDistanceBetweenCoords(coords, v.Garderobe, true)
+
+                    if distance < Config.DrawDistance then
+                        DrawMarker(20, v.Garderobe[i], 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+                        letSleep = false
+                    end
+
+                    if distance < Config.MarkerSize.x then
+                        isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Garderoba', i
+                    end
+                end
+
+                for i=1, #v.Vozila, 1 do
+                    local distance = GetDistanceBetweenCoords(coords, v.Vozila, true)
+
+                    if distance < Config.DrawDistance then
+                        DrawMarker(20, v.Vozila[i], 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+                        letSleep = false
+                    end
+
+                    if distance < Config.MarkerSize.x then
+                        isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Vozila', i
+                    end
+                end
+            end
+        end
+    end
+end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(10)
