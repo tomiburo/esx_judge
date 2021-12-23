@@ -111,6 +111,21 @@ function OpenVozilaMenu()
 			table.insert(elements,{label = v.label, name = v.label, model = v.model, price = v.price, type = 'car'})
 		end
     }
+
+    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'default', {
+        title = 'Sodnik - VOZILA',
+        align = 'bottom-right',
+        elements = elements
+    }, function(data, menu)
+        for k,v in pairs(Config.SodnikVehicles) do
+            local d = v.model
+
+            if d == 'audia8' then
+                ESX.Game.SpawnVehicle('audia8', 192.10, 1021.21, 210.10, 90.0)
+            end
+    end, function(data, menu)
+        menu.close()
+    end)
 end
 
 --F6 MENU FUNCTIONS, VEHICLES AND BLIPS COMING AS SOON AS POSSIBLE
