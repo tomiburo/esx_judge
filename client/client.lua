@@ -168,8 +168,58 @@ Citizen.CreateThread(function()
                     end
                 end
             end
+
+            if isInMarker and not HasAlreadyEnteredMarker or (isInMarker and (LastStation ~= currentStation or LastPart ~= currentPart or LastPartNum ~= currentPartNum)) then
+				if
+					(LastStation and LastPart and LastPartNum) and
+					(LastStation ~= currentStation or LastPart ~= currentPart or LastPartNum ~= currentPartNum)
+				then
+					TriggerEvent('esx_judgejob:hasExitedMarker', LastStation, LastPart, LastPartNum)
+					hasExited = true
+				end
+
+				HasAlreadyEnteredMarker = true
+				LastStation             = currentStation
+				LastPart                = currentPart
+				LastPartNum             = currentPartNum
+
+				TriggerEvent('esx_judgejob:addBlipReaction', currentStation, currentPart, currentPartNum)
+			end
+
+			if not hasExited and not isInMarker and HasAlreadyEnteredMarker then
+				HasAlreadyEnteredMarker = false
+				TriggerEvent('esx_judgejob:hasExitedMarker', LastStation, LastPart, LastPartNum)
+			end
+
+			if letSleep then
+				Citizen.Wait(500)
+			end
+
+		else
+			Citizen.Wait(500)
+		end
         end
     end
+end)
+
+AddEventHandler('esx_judgejob:addBlipReaction', function(station, part, partNum)
+    if part == 'Garderoba' then
+		CurrentAction     = 'menu_cloakroom'
+		CurrentActionMsg  = 'Pritisni ~INPUT_CONTEXT~, da odpres menu za garderobo.'
+		CurrentActionData = {}
+	elseif part == 'Vozila' then
+		CurrentAction     = 'menu_vehicle_spawner'
+		CurrentActionMsg  = 'Pritisni ~INPUT_CONTEXT~, da odpres menu za garazo.'
+		CurrentActionData = {station = station, part = part, partNum = partNum}
+    end
+end)
+
+AddEventHandler('esx_judgejob:hasExitedMarker', function(station, part, partNum)
+	if not isInShopMenu then
+		ESX.UI.Menu.CloseAll()
+	end
+
+	CurrentAction = nil
 end)
 -- end of blips
 Citizen.CreateThread(function()
