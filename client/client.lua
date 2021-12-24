@@ -62,6 +62,10 @@ function F6Menu() -- F6 MENU IN PROGRESS
             OpenFineMenu()
     end, function(data, menu)
         menu.close()
+
+        CurrentAction     = 'menu_cloakroom'
+		CurrentActionMsg  = 'Pritisni ~INPUT_CONTEXT~, da odpres menu za garderobo.'
+		CurrentActionData = {}
     end)
 end
 
@@ -125,6 +129,10 @@ function OpenVozilaMenu()
             end
     end, function(data, menu)
         menu.close()
+
+        CurrentAction     = 'menu_vehicle_spawner'
+		CurrentActionMsg  = 'Pritisni ~INPUT_CONTEXT~, da odpres menu za garazo.'
+		CurrentActionData = {}
     end)
 end
 
