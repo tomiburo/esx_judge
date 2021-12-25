@@ -1,5 +1,7 @@
 ESX              = nil
 local PlayerData = {}
+local CurrentActionData = {}
+local isInShopMenu            = false
 
 Citizen.CreateThread(function()
 	while ESX == nil do
@@ -235,6 +237,16 @@ Citizen.CreateThread(function()
         Citizen.Wait(10)
         if IsControlJustPressed(0,167) then
             F6Menu()
+        end
+        if CurrentAction then
+            ESX.ShowHelpNotification(CurrentAction)
+            if IsControlJustPressed(0, 38) and PlayerData.job and PlayerData.job.name == 'judge' then
+                if CurrentAction == 'menu_vehicle_spawner' then
+                    OpenVozilaMenu()
+                elseif CurrentAction == 'menu_cloakroom' then
+                    OpenCloakroomMenu()
+                end
+            end
         end
     end
 end)
