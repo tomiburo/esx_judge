@@ -1,8 +1,16 @@
 Config = {}
+Config.DrawDistance = 100.0
+Config.MarkerType = {Garderobe = 20, Vozila = 36}
+Config.MarkerColor = {r = 0, g = 45, b = 4}
+Config.MarkerSize = { x = 1.5, y = 1.5, z = 0.5 }
 
 Config.SodnikVehicles = {
   { model = '', label = '-----VOZILA-----'},
   { model = 'audia8', label = 'Skoda VRS 2020'} -- TODO: add cars 
+}
+
+Config.Blips = {
+  Garderobe = {x = 10, y = 10, z = 10}
 }
 
 Config.Uniforms = {

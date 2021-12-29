@@ -239,7 +239,7 @@ Citizen.CreateThread(function()
             F6Menu()
         end
         if CurrentAction then
-            ESX.ShowHelpNotification(CurrentAction)
+            ESX.ShowHelpNotification(CurrentActionMsg)
             if IsControlJustPressed(0, 38) and PlayerData.job and PlayerData.job.name == 'judge' then
                 if CurrentAction == 'menu_vehicle_spawner' then
                     OpenVozilaMenu()
