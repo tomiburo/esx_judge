@@ -145,7 +145,7 @@ end
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(10)
-        if PlayerData.job and PlayerData.job.name == 'judge' then
+        --if PlayerData.job and PlayerData.job.name == 'judge' then
             local playerPed = PlayerPedId()
             local coords = GetEntityCoords(playerPed)
             local isInMarker, hasExited, letSleep = false, false, true
@@ -205,9 +205,9 @@ Citizen.CreateThread(function()
 				Citizen.Wait(500)
 			end
 
-		else
-			Citizen.Wait(500)
-		end
+		--else
+			--Citizen.Wait(500)
+		--end
         end
     end
 end)
@@ -240,7 +240,7 @@ Citizen.CreateThread(function()
         end
         if CurrentAction then
             ESX.ShowHelpNotification(CurrentActionMsg)
-            if IsControlJustPressed(0, 38) and PlayerData.job and PlayerData.job.name == 'judge' then
+            if IsControlJustPressed(0, 38) then --[and PlayerData.job and PlayerData.job.name == 'judge']-- then
                 if CurrentAction == 'menu_vehicle_spawner' then
                     OpenVozilaMenu()
                 elseif CurrentAction == 'menu_cloakroom' then

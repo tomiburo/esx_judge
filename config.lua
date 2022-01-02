@@ -6,11 +6,15 @@ Config.MarkerSize = { x = 1.5, y = 1.5, z = 0.5 }
 
 Config.SodnikVehicles = {
   { model = '', label = '-----VOZILA-----'},
-  { model = 'audia8', label = 'Skoda VRS 2020'} -- TODO: add cars 
+  { model = 'audia8', label = 'Audi A8'} -- TODO: add cars 
 }
 
 Config.Blips = {
-  Garderobe = {x = 10, y = 10, z = 10}
+  Garderobe = {x = 238.57, y = -110.61, z = 36.13},
+
+  Vozila = {x = 236.56, y = -1073.55, z = 29.29},
+
+  -- Vozila spawn = {x = 236.22, y = -1070.83, z = 29.28, h = 2.05}
 }
 
 Config.Uniforms = {
