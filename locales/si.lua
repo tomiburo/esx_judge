@@ -8,4 +8,6 @@ Locales['si'] = {
     ['unknown'] = 'Neznano - srednji spol',
     ['male'] = 'Moski',
     ['female'] = 'Zenska',
+    ['armory_item'] = '$%s',
+    ['fine_total'] = 'Znesek globe: %s',
 }

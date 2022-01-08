@@ -49,7 +49,8 @@ end
 function F6Menu() -- F6 MENU IN PROGRESS
     local stuff = {
         {label = 'Preveri identiteto osebe', value = 'id'},
-        {label = 'Preveri kazni osebi', value = 'kazni'}
+        {label = 'Preveri kazni osebi', value = 'kazni'},
+        {label = 'Poslji osebo v zapor', value = 'zapor'}
     }
 
     ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'defalut', {
@@ -64,6 +65,8 @@ function F6Menu() -- F6 MENU IN PROGRESS
                 OpenIDCardMenu(closestPlayer)
             elseif x == 'kazni' then
                 OpenFineMenu(closestPlayer)
+            elseif x == 'zapor' then
+                TriggerEvent('esx_qalle_jail:openJailMenu')
             end
         else
             ESX.ShowNotification('V blizini ni igralca.')
@@ -219,6 +222,57 @@ function OpenIDCardMenu(player)
 			menu.close()
 		end)
 	end, GetPlayerServerId(player)) 
+end
+
+function OpenFineMenu(player)
+	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'fine', {
+		title    = _U('fine'),
+		align    = 'top-left',
+		elements = {
+			{label = _U('traffic_offense'), value = 0},
+			{label = _U('minor_offense'),   value = 1},
+			{label = _U('average_offense'), value = 2},
+			{label = _U('major_offense'),   value = 3}
+	}}, function(data, menu)
+		OpenFineCategoryMenu(player, data.current.value)
+	end, function(data, menu)
+		menu.close()
+	end)
+end
+
+function OpenFineCategoryMenu(player, category)
+	ESX.TriggerServerCallback('esx_policejob:getFineList', function(fines)
+		local elements = {}
+
+		for k,fine in ipairs(fines) do
+			table.insert(elements, {
+				label     = ('%s <span style="color:green;">%s</span>'):format(fine.label, _U('armory_item', ESX.Math.GroupDigits(fine.amount))),
+				value     = fine.id,
+				amount    = fine.amount,
+				fineLabel = fine.label
+			})
+		end
+
+		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'fine_category', {
+			title    = _U('fine'),
+			align    = 'top-left',
+			elements = elements
+		}, function(data, menu)
+			menu.close()
+
+			if Config.EnablePlayerManagement then
+				TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), 'society_police', _U('fine_total', data.current.fineLabel), data.current.amount)
+			else
+				TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), '', _U('fine_total', data.current.fineLabel), data.current.amount)
+			end
+
+			ESX.SetTimeout(300, function()
+				OpenFineCategoryMenu(player, category)
+			end)
+		end, function(data, menu)
+			menu.close()
+		end)
+	end, category)
 end
 -- blips here
 Citizen.CreateThread(function()

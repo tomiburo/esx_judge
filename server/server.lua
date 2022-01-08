@@ -66,3 +66,11 @@ ESX.RegisterServerCallback('esx_judge:getOtherPlayerData', function(source, cb, 
 		cb(data)
 	end
 end)
+
+ESX.RegisterServerCallback('esx_policejob:getFineList', function(source, cb, category)
+	MySQL.Async.fetchAll('SELECT * FROM fine_types WHERE category = @category', {
+		['@category'] = category
+	}, function(fines)
+		cb(fines)
+	end)
+end)
