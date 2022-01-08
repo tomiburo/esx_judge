@@ -57,11 +57,17 @@ function F6Menu() -- F6 MENU IN PROGRESS
         align = 'bottom-right',
         elements = stuff
     }, function(data, menu)
+        local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
         local x = data.current.value
-        if x == 'id' then
-            OpenIDCardMenu()
-        elseif x == 'kazni' then
-            OpenFineMenu()
+        if closestPlayer ~= -1 and closestDistance <= 3.0 then
+            if x == 'id' then
+                OpenIDCardMenu(closestPlayer)
+            elseif x == 'kazni' then
+                OpenFineMenu(closestPlayer)
+            end
+        else
+            ESX.ShowNotification('V blizini ni igralca.')
+        end
     end, function(data, menu)
         menu.close()
 
@@ -138,14 +144,87 @@ function OpenVozilaMenu()
     end)
 end
 
-function OpenIDCardMenu()
--- TODO 
+function OpenIDCardMenu(player)
+	ESX.TriggerServerCallback('esx_judge:getOtherPlayerData', function(data)
+		local elements = {}
+		local nameLabel = _U('name', data.name)
+		local jobLabel, sexLabel, dobLabel, heightLabel, idLabel
+
+		if data.job.grade_label and  data.job.grade_label ~= '' then
+			jobLabel = _U('job', data.job.label .. ' - ' .. data.job.grade_label)
+		else
+			jobLabel = _U('job', data.job.label)
+		end
+
+		if Config.EnableESXIdentity then
+			nameLabel = _U('name', data.firstname .. ' ' .. data.lastname)
+
+			if data.sex then
+				if string.lower(data.sex) == 'm' then
+					sexLabel = _U('sex', _U('male'))
+				else
+					sexLabel = _U('sex', _U('female'))
+				end
+			else
+				sexLabel = _U('sex', _U('unknown'))
+			end
+
+			if data.dob then
+				dobLabel = _U('dob', data.dob)
+			else
+				dobLabel = _U('dob', _U('unknown'))
+			end
+
+			if data.height then
+				heightLabel = _U('height', data.height)
+			else
+				heightLabel = _U('height', _U('unknown'))
+			end
+
+			if data.name then
+				idLabel = _U('id', data.name)
+			else
+				idLabel = _U('id', _U('unknown'))
+			end
+		end
+
+		local elements = {
+			{label = nameLabel},
+			{label = jobLabel}
+		}
+
+        table.insert(elements, {label = sexLabel})
+        table.insert(elements, {label = dobLabel})
+        table.insert(elements, {label = heightLabel})
+        table.insert(elements, {label = idLabel})
+
+
+		if data.drunk then
+			table.insert(elements, {label = _U('bac', data.drunk)})
+		end
+
+		if data.licenses then
+			table.insert(elements, {label = _U('license_label')})
+
+			for i=1, #data.licenses, 1 do
+				table.insert(elements, {label = data.licenses[i].label})
+			end
+		end
+
+		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'citizen_interaction', {
+			title    = _U('citizen_interaction'),
+			align    = 'top-left',
+			elements = elements
+		}, nil, function(data, menu)
+			menu.close()
+		end)
+	end, GetPlayerServerId(player)) 
 end
 -- blips here
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(10)
-        --if PlayerData.job and PlayerData.job.name == 'judge' then
+        if PlayerData.job and PlayerData.job.name == 'judge' then
             local playerPed = PlayerPedId()
             local coords = GetEntityCoords(playerPed)
             local isInMarker, hasExited, letSleep = false, false, true
@@ -205,10 +284,9 @@ Citizen.CreateThread(function()
 				Citizen.Wait(500)
 			end
 
-		--else
-			--Citizen.Wait(500)
-		--end
-        end
+		else
+			Citizen.Wait(500)
+		end
     end
 end)
 
@@ -240,7 +318,7 @@ Citizen.CreateThread(function()
         end
         if CurrentAction then
             ESX.ShowHelpNotification(CurrentActionMsg)
-            if IsControlJustPressed(0, 38) then --[and PlayerData.job and PlayerData.job.name == 'judge']-- then
+            if IsControlJustPressed(0, 38) and PlayerData.job and PlayerData.job.name == 'judge' then
                 if CurrentAction == 'menu_vehicle_spawner' then
                     OpenVozilaMenu()
                 elseif CurrentAction == 'menu_cloakroom' then
@@ -251,4 +329,4 @@ Citizen.CreateThread(function()
     end
 end)
 
---F6 MENU FUNCTIONS, COTNROLS, VEHICLES COMING AS SOON AS POSSIBLE
+--F6 MENU FUNCTIONS, COMING AS SOON AS POSSIBLE
