@@ -14,6 +14,8 @@ Config.Blips = {
 
   Vozila = {x = 236.56, y = -1073.55, z = 29.29},
 
+  SefovMeni = {x = 29.69, y = 69.29, z = 29.29},
+
   -- Vozila spawn = {x = 236.22, y = -1070.83, z = 29.28, h = 2.05}
 }
 

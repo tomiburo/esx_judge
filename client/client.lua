@@ -310,6 +310,19 @@ Citizen.CreateThread(function()
                         isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Vozila', i
                     end
                 end
+
+				for i=1, #v.SefovMeni, 1 do
+					local distance = GetDistanceBetweenCoords(coords, v.BossActions[i], true)
+
+					if distance < Config.DrawDistance then
+						DrawMarker(22, v.BossActions[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+						letSleep = false
+					end
+
+					if distance < Config.MarkerSize.x then
+						isInMarker, currentStation, currentPart, currentPartNum = true, k, 'BossActions', i
+					end
+				end
             end
 
             if isInMarker and not HasAlreadyEnteredMarker or (isInMarker and (LastStation ~= currentStation or LastPart ~= currentPart or LastPartNum ~= currentPartNum)) then
@@ -353,6 +366,10 @@ AddEventHandler('esx_judgejob:addBlipReaction', function(station, part, partNum)
 		CurrentAction     = 'menu_vehicle_spawner'
 		CurrentActionMsg  = 'Pritisni ~INPUT_CONTEXT~, da odpres menu za garazo.'
 		CurrentActionData = {station = station, part = part, partNum = partNum}
+	elseif part == 'BossActions' then
+		CurrentAction     = 'menu_boss_actions'
+		CurrentActionMsg  = "Pritisni ~INPUT_CONTEXT~, da odpres sefov meni."
+		CurrentActionData = {}
     end
 end)
 
@@ -377,6 +394,15 @@ Citizen.CreateThread(function()
                     OpenVozilaMenu()
                 elseif CurrentAction == 'menu_cloakroom' then
                     OpenCloakroomMenu()
+				elseif CurrentAction == 'menu_boss_actions' then
+					ESX.UI.Menu.CloseAll()
+					TriggerEvent('esx_society:openBossMenu', 'judge', function(data, menu)
+						menu.close()
+
+						CurrentAction     = 'menu_boss_actions'
+						CurrentActionMsg  = "Pritisni ~INPUT_CONTEXT~ da odprete sefov meni!"
+						CurrentActionData = {}
+					end, { wash = false }) -- disable washing money
                 end
             end
         end
