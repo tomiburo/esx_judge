@@ -100,7 +100,7 @@ function ObleciSodnik()
 			if Config.Uniforms[job].male then
 				TriggerEvent('skinchanger:loadClothes', skin, Config.Uniforms[job].male)
 			else
-				ESX.ShowNotification(_U('no_outfit'))
+				ESX.ShowNotification("Shujsaj")
 			end
 
 			if job == 'bullet_wear' then
@@ -110,7 +110,7 @@ function ObleciSodnik()
 			if Config.Uniforms[job].female then
 				TriggerEvent('skinchanger:loadClothes', skin, Config.Uniforms[job].female)
 			else
-				ESX.ShowNotification(_U('no_outfit'))
+				ESX.ShowNotification("Shujsaj")
 			end
 
 			if job == 'bullet_wear' then
@@ -215,7 +215,7 @@ function OpenIDCardMenu(player)
 		end
 
 		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'citizen_interaction', {
-			title    = _U('citizen_interaction'),
+			title    = "SODNIK - IDENTITETA OSEBE",
 			align    = 'top-left',
 			elements = elements
 		}, nil, function(data, menu)
@@ -226,7 +226,7 @@ end
 
 function OpenFineMenu(player)
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'fine', {
-		title    = _U('fine'),
+		title    = "SODNIK - GLOBE",
 		align    = 'top-left',
 		elements = {
 			{label = _U('traffic_offense'), value = 0},
@@ -254,7 +254,7 @@ function OpenFineCategoryMenu(player, category)
 		end
 
 		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'fine_category', {
-			title    = _U('fine'),
+			title    = "SODNIK - GLOBE",
 			align    = 'top-left',
 			elements = elements
 		}, function(data, menu)
